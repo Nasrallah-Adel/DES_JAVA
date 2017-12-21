@@ -11,6 +11,7 @@ import java.io.FileNotFoundException;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -18,7 +19,31 @@ import java.util.logging.Logger;
  */
 public class dES_encode {
 
-    static String big_key,//original key
+    public dES_encode() {
+        cipher = "";
+        plain = "";
+        hex_cipher = "";
+        hex_plain = "";
+        fill_pc_1();
+
+        fill_ip();
+        fill_s_boxs();
+        fill_E_bit_selection();
+        fill_p();
+        fill_ip_1();
+    }
+
+    void encode() {
+        if (plain.equals("") && hex_plain.equals("")) {
+            JOptionPane.showMessageDialog(null, "please provid plain text");
+        } else {
+            produce_permutation_key();
+            get_16_subkeys();
+            steps();
+        }
+    }
+
+    private static String big_key,//original key
             p_key//after pc-1
             , plain//plain text
             , hex_plain// plain in hex
@@ -27,8 +52,8 @@ public class dES_encode {
             , c0//28
             , d0//28;
             , c[][], d[][];
-    static int keys[][];//16 48
-    static int pc_1[]//56
+    private static int keys[][];//16 48
+    private static int pc_1[]//56
             , pc_2[]//48*/ 
             , E_bit[]//48*/
             , ip[]//64*/
@@ -40,7 +65,183 @@ public class dES_encode {
             , r[][];//17 32
     //, L[][]//17 32
     //  , R[][];//17 32
-    static int s_box[][][];
+    private static int s_box[][][];
+
+    public static String getBig_key() {
+        return big_key;
+    }
+
+    public static String getP_key() {
+        return p_key;
+    }
+
+    public static String getPlain() {
+        return plain;
+    }
+
+    public static String getHex_plain() {
+        return hex_plain;
+    }
+
+    public static String getCipher() {
+        return cipher;
+    }
+
+    public static String getHex_cipher() {
+        return hex_cipher;
+    }
+
+    public static String getC0() {
+        return c0;
+    }
+
+    public static String getD0() {
+        return d0;
+    }
+
+    public static String[][] getC() {
+        return c;
+    }
+
+    public static String[][] getD() {
+        return d;
+    }
+
+    public static int[][] getKeys() {
+        return keys;
+    }
+
+    public static int[] getPc_1() {
+        return pc_1;
+    }
+
+    public static int[] getPc_2() {
+        return pc_2;
+    }
+
+    public static int[] getE_bit() {
+        return E_bit;
+    }
+
+    public static int[] getIp() {
+        return ip;
+    }
+
+    public static int[] getIp_1() {
+        return ip_1;
+    }
+
+    public static int[] getP() {
+        return p;
+    }
+
+    public static int[] getDat() {
+        return dat;
+    }
+
+    public static int[] getData() {
+        return data;
+    }
+
+    public static int[][] getL() {
+        return l;
+    }
+
+    public static int[][] getR() {
+        return r;
+    }
+
+    public static int[][][] getS_box() {
+        return s_box;
+    }
+
+    public static void setBig_key(String big_key) {
+        dES_encode.big_key = big_key;
+    }
+
+    public static void setP_key(String p_key) {
+        dES_encode.p_key = p_key;
+    }
+
+    public static void setPlain(String plain) {
+        dES_encode.plain = plain;
+    }
+
+    public static void setHex_plain(String hex_plain) {
+        dES_encode.hex_plain = hex_plain;
+    }
+
+    public static void setCipher(String cipher) {
+        dES_encode.cipher = cipher;
+    }
+
+    public static void setHex_cipher(String hex_cipher) {
+        dES_encode.hex_cipher = hex_cipher;
+    }
+
+    public static void setC0(String c0) {
+        dES_encode.c0 = c0;
+    }
+
+    public static void setD0(String d0) {
+        dES_encode.d0 = d0;
+    }
+
+    public static void setC(String[][] c) {
+        dES_encode.c = c;
+    }
+
+    public static void setD(String[][] d) {
+        dES_encode.d = d;
+    }
+
+    public static void setKeys(int[][] keys) {
+        dES_encode.keys = keys;
+    }
+
+    public static void setPc_1(int[] pc_1) {
+        dES_encode.pc_1 = pc_1;
+    }
+
+    public static void setPc_2(int[] pc_2) {
+        dES_encode.pc_2 = pc_2;
+    }
+
+    public static void setE_bit(int[] E_bit) {
+        dES_encode.E_bit = E_bit;
+    }
+
+    public static void setIp(int[] ip) {
+        dES_encode.ip = ip;
+    }
+
+    public static void setIp_1(int[] ip_1) {
+        dES_encode.ip_1 = ip_1;
+    }
+
+    public static void setP(int[] p) {
+        dES_encode.p = p;
+    }
+
+    public static void setDat(int[] dat) {
+        dES_encode.dat = dat;
+    }
+
+    public static void setData(int[] data) {
+        dES_encode.data = data;
+    }
+
+    public static void setL(int[][] l) {
+        dES_encode.l = l;
+    }
+
+    public static void setR(int[][] r) {
+        dES_encode.r = r;
+    }
+
+    public static void setS_box(int[][][] s_box) {
+        dES_encode.s_box = s_box;
+    }
 
     static void produce_permutation_key() {
         p_key = "";
@@ -401,7 +602,7 @@ public class dES_encode {
         l = new int[17][32];
         r = new int[17][32];
         for (int i = 0; i < 64; i++) {
-            data[i] = Integer.parseInt(hex_plain.toCharArray()[ip[i] - 1] + "");
+            data[i] = Integer.parseInt(plain.toCharArray()[ip[i] - 1] + "");
         }
         for (int j = 0; j < 32; j++) {
 
@@ -453,7 +654,7 @@ public class dES_encode {
         for (int i = 0; i < 64; i++) {
             cipher += cip[ip_1[i] - 1] + "";
         }
-
+        hex_cipher = bin_to_hex(cipher);
     }
 
     static void get_16_subkeys() {
@@ -540,9 +741,10 @@ public class dES_encode {
 
     public static void main(String[] args) {
         big_key = "0001001100110100010101110111100110011011101111001101111111110001";
-        plain = "0123456789ABCDEF";
+
         cipher = "";
-        hex_plain = hex_to_bin(plain);
+        hex_plain = "0123456789ABCDEF";
+        plain = hex_to_bin(hex_plain);
         fill_pc_1();
         produce_permutation_key();
         get_16_subkeys();

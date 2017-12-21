@@ -5,9 +5,9 @@
  */
 package des;
 
-import static des.dES_encode.data;
 import java.io.File;
 import java.util.Scanner;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -15,6 +15,30 @@ import java.util.Scanner;
  */
 public class des_decode {
 
+    public des_decode() {
+        cipher = "";
+        plain = "";
+        hex_cipher = "";
+        hex_plain = "";
+        fill_pc_1();
+
+        fill_ip();
+        fill_s_boxs();
+        fill_E_bit_selection();
+        fill_p();
+        fill_ip_1();
+    }
+
+    void decode() {
+        if (cipher.equals("") && hex_cipher.equals("")) {
+            JOptionPane.showMessageDialog(null, "please provid cipher text");
+        } else {
+
+            inv_steps();
+            produce_permutation_key();
+            get_16_subkeys();
+        }
+    }
     static String big_key,//original key
             p_key//after pc-1
             , plain//plain text
