@@ -33,10 +33,10 @@ public class des_decode {
         if (cipher.equals("") && hex_cipher.equals("")) {
             JOptionPane.showMessageDialog(null, "please provid cipher text");
         } else {
-
-            inv_steps();
             produce_permutation_key();
             get_16_subkeys();
+            inv_steps();
+
         }
     }
     static String big_key,//original key
@@ -62,6 +62,182 @@ public class des_decode {
     //, L[][]//17 32
     //  , R[][];//17 32
     static int s_box[][][];
+
+    public static void setBig_key(String big_key) {
+        des_decode.big_key = big_key;
+    }
+
+    public static void setP_key(String p_key) {
+        des_decode.p_key = p_key;
+    }
+
+    public static void setPlain(String plain) {
+        des_decode.plain = plain;
+    }
+
+    public static void setHex_plain(String hex_plain) {
+        des_decode.hex_plain = hex_plain;
+    }
+
+    public static void setCipher(String cipher) {
+        des_decode.cipher = cipher;
+    }
+
+    public static void setHex_cipher(String hex_cipher) {
+        des_decode.hex_cipher = hex_cipher;
+    }
+
+    public static void setC0(String c0) {
+        des_decode.c0 = c0;
+    }
+
+    public static void setD0(String d0) {
+        des_decode.d0 = d0;
+    }
+
+    public static void setC(String[][] c) {
+        des_decode.c = c;
+    }
+
+    public static void setD(String[][] d) {
+        des_decode.d = d;
+    }
+
+    public static void setKeys(int[][] keys) {
+        des_decode.keys = keys;
+    }
+
+    public static void setPc_1(int[] pc_1) {
+        des_decode.pc_1 = pc_1;
+    }
+
+    public static void setPc_2(int[] pc_2) {
+        des_decode.pc_2 = pc_2;
+    }
+
+    public static void setE_bit(int[] E_bit) {
+        des_decode.E_bit = E_bit;
+    }
+
+    public static void setIp(int[] ip) {
+        des_decode.ip = ip;
+    }
+
+    public static void setIp_1(int[] ip_1) {
+        des_decode.ip_1 = ip_1;
+    }
+
+    public static void setP(int[] p) {
+        des_decode.p = p;
+    }
+
+    public static void setDat(int[] dat) {
+        des_decode.dat = dat;
+    }
+
+    public static void setData(int[] data) {
+        des_decode.data = data;
+    }
+
+    public static void setL(int[][] l) {
+        des_decode.l = l;
+    }
+
+    public static void setR(int[][] r) {
+        des_decode.r = r;
+    }
+
+    public static void setS_box(int[][][] s_box) {
+        des_decode.s_box = s_box;
+    }
+
+    public static String getBig_key() {
+        return big_key;
+    }
+
+    public static String getP_key() {
+        return p_key;
+    }
+
+    public static String getPlain() {
+        return plain;
+    }
+
+    public static String getHex_plain() {
+        return hex_plain;
+    }
+
+    public static String getCipher() {
+        return cipher;
+    }
+
+    public static String getHex_cipher() {
+        return hex_cipher;
+    }
+
+    public static String getC0() {
+        return c0;
+    }
+
+    public static String getD0() {
+        return d0;
+    }
+
+    public static String[][] getC() {
+        return c;
+    }
+
+    public static String[][] getD() {
+        return d;
+    }
+
+    public static int[][] getKeys() {
+        return keys;
+    }
+
+    public static int[] getPc_1() {
+        return pc_1;
+    }
+
+    public static int[] getPc_2() {
+        return pc_2;
+    }
+
+    public static int[] getE_bit() {
+        return E_bit;
+    }
+
+    public static int[] getIp() {
+        return ip;
+    }
+
+    public static int[] getIp_1() {
+        return ip_1;
+    }
+
+    public static int[] getP() {
+        return p;
+    }
+
+    public static int[] getDat() {
+        return dat;
+    }
+
+    public static int[] getData() {
+        return data;
+    }
+
+    public static int[][] getL() {
+        return l;
+    }
+
+    public static int[][] getR() {
+        return r;
+    }
+
+    public static int[][][] getS_box() {
+        return s_box;
+    }
 
     static void produce_permutation_key() {
         p_key = "";

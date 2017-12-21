@@ -66,8 +66,11 @@ public class DES_GUI extends javax.swing.JFrame {
         jLabel2.setText("cipher");
 
         jButton2.setText("decode");
-
-        jTextField1.setText("jTextField1");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         jLabel3.setText("key");
 
@@ -258,6 +261,78 @@ String type = "";
     private void jRadioButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton2ActionPerformed
         type = "bin";          // TODO add your handling code here:
     }//GEN-LAST:event_jRadioButton2ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+
+        jTextArea1.setText("");
+        String ci = jTextArea2.getText();
+        int x = ci.replace(" ", "").length();
+        ci = ci.replace(" ", "");
+        String key = jTextField1.getText();
+        key = key.replace(" ", "");
+        String Res = "";
+
+        des_decode decode = new des_decode();
+
+        if (type == "hex") {
+            key = decode.hex_to_bin(key);
+            decode.setBig_key(key);
+            double size = 0;
+            size = Math.ceil((double) x / (double) 16);
+            int ind = 0;
+            for (int i = 0; i < size; i++) {
+                String h = "";
+                for (int j = 0; j < 16; j++) {
+                    if (ind < x) {
+                        if (ci.toCharArray()[ind] != ' ') {
+                            h += ci.toCharArray()[ind];
+                        } else {
+                            j--;
+
+                        }
+                        ind++;
+                    } else {
+                        h += "A";
+                    }
+
+                }
+                System.out.println("h " + h);
+                decode.setCipher(decode.hex_to_bin(h));
+                decode.setHex_cipher(h);
+                decode.decode();
+                Res = (decode.bin_to_hex(decode.getPlain()));
+            }
+            jTextArea1.setText(Res);
+        } else if (type == "bin") {
+
+            decode.setBig_key(key);
+            double size = 0;
+            size = Math.ceil((double) x / (double) 64);
+            int ind = 0;
+            for (int i = 0; i < size; i++) {
+                String h = "";
+                for (int j = 0; j < 64; j++) {
+                    if (ind < x) {
+                        if (ci.toCharArray()[ind] != ' ') {
+                            h += ci.toCharArray()[ind++];
+                        }
+
+                    } else {
+                        h += "1";
+                    }
+
+                }
+                System.out.println("h " + h);
+                decode.setCipher((h));
+                decode.setHex_cipher(decode.bin_to_hex(h));
+                decode.decode();
+                Res += ((decode.getPlain()));
+            }
+            jTextArea1.setText(Res);
+        } else {
+            JOptionPane.showMessageDialog(null, "must choose hex or binary");
+        } // TODO add your handling code here:
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments
