@@ -178,7 +178,7 @@ If  we  then  encrypt  this plaintext message  64  bits  (16
 hexadecimal  digits)  at  a time, using  the  same  DES  key
 "0E329232EA6D0D73" as before, we get the ciphertext:
 <p>
-"C0999FDDE378D7ED 727DA00BCA5A84EE 47F269A4D6438190 9DD52F78F5358499 828AC9B453E0E653".
+"C0999FDDE378D7ED 727DA00BCA5A84EE 47F269A4D6438190 D9D52F78F5358499 828AC9B453E0E653".
 <p>                              
 This  is  the secret code that can be transmitted or stored.
 Decrypting  the  ciphertext restores  the  original  message
