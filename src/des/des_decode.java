@@ -5,6 +5,7 @@
  */
 package des;
 
+import static des.dES_encode.data;
 import java.io.File;
 import java.util.Scanner;
 
@@ -44,7 +45,7 @@ public class des_decode {
             p_key += big_key.toCharArray()[pc_1[i] - 1];
 
         }
-        System.out.print(p_key);
+        // System.out.print(p_key);
     }
 
     static void fill_pc_1() {
@@ -187,14 +188,14 @@ public class des_decode {
         System.out.println("");
     }
 
-    static int[] mangler_finction(int ll[], int kk[]) {
-        int L[] = new int[48];
+    static int[] mangler_finction(int rr[], int kk[]) {
+        int R[] = new int[48];
         for (int i = 0; i < 48; i++) {
-            L[i] = ll[E_bit[i] - 1];//expand
+            R[i] = rr[E_bit[i] - 1];//expand
         }
         int mang[] = new int[48];
         for (int i = 0; i < 48; i++) {
-            mang[i] = L[i] ^ kk[i];
+            mang[i] = R[i] ^ kk[i];
         }
         return mang;
     }
@@ -474,15 +475,79 @@ public class des_decode {
 
     }
 
-    void inv_steps() {
+    static void inv_steps() {//rounds
+        data = new int[64];
+        l = new int[17][32];
+        r = new int[17][32];
+        for (int i = 0; i < 64; i++) {
+            data[ip_1[i] - 1] = Integer.parseInt(cipher.toCharArray()[i] + "");
+        }
+        for (int j = 0; j < 32; j++) {
+
+            r[16][j] = data[j];
+        }
+
+        for (int j = 32, z = 0; j < 64; j++) {
+            l[16][z++] = data[j];
+        }
+
+        for (int i = 16; i >= 1; i--) {
+
+            r[i - 1] = l[i];
+
+            // memcpy(r[i], x_or(l[i - 1], reduction(mangler_finction(r[i - 1], i - 1))), sizeof(r[i]));
+            int B[] = new int[48];
+            B = mangler_finction(r[i - 1], keys[i - 1]);
+            int sbox_outt[] = new int[32];
+            sbox_outt = sbox_out(B, i);
+            l[i - 1] = x_or(r[i], sbox_outt);
+        }
+
+        for (int i = 0; i < 17; i++) {
+
+            System.out.print(" l " + i + " = ");
+            for (int j = 0; j < 32; j++) {
+
+                System.out.print(l[i][j] + "");
+            }
+            System.out.println("");
+
+        }
+
+        for (int i = 0; i < 17; i++) {
+
+            System.out.print(" r " + i + " = ");
+            for (int j = 0; j < 32; j++) {
+                System.out.print(r[i][j] + "");
+            }
+            System.out.println("");
+        }
+        String PL[] = new String[64];
+        char ar[] = new char[64];
+        for (int i = 0; i < 32; i++) {
+            PL[i] = l[0][i] + "";
+        }
+        for (int i = 0, z = 32; i < 32; i++) {
+            PL[z++] = r[0][i] + "";
+        }
+        for (int i = 0; i < 64; i++) {
+            ar[ip[i] - 1] = PL[i].toCharArray()[0];
+
+        }
+        for (int i = 0; i < 64; i++) {
+            plain += ar[i];
+        }
 
     }
 
     public static void main(String[] args) {
         big_key = "0001001100110100010101110111100110011011101111001101111111110001";
+
+        hex_plain = "";
         plain = "";
         hex_cipher = "85E813540F0AB405";
         cipher = hex_to_bin(hex_cipher);
+        System.out.println(cipher);
         fill_pc_1();
         produce_permutation_key();
         get_16_subkeys();
@@ -491,6 +556,10 @@ public class des_decode {
         fill_E_bit_selection();
         fill_p();
         fill_ip_1();
+        inv_steps();
 
+        hex_plain = bin_to_hex(plain);
+        System.out.println("plain = " + plain);
+        System.out.println("plain hex = " + hex_plain);
     }
 }
