@@ -174,13 +174,16 @@ String type = "";
         String plain[];
         jTextArea2.setText("");
         String pl = jTextArea1.getText();
-        int x = pl.length();
+        int x = pl.replace(" ", "").length();
+        pl = pl.replace(" ", "");
         String key = jTextField1.getText();
         String Res = "";
 
         dES_encode encode = new dES_encode();
-        encode.setBig_key(key);
+
         if (type == "hex") {
+            key = encode.hex_to_bin(key);
+            encode.setBig_key(key);
             double size = 0;
             size = Math.ceil((double) x / (double) 16);
             int ind = 0;
@@ -188,7 +191,13 @@ String type = "";
                 String h = "";
                 for (int j = 0; j < 16; j++) {
                     if (ind < x) {
-                        h += pl.toCharArray()[ind++];
+                        if (pl.toCharArray()[ind] != ' ') {
+                            h += pl.toCharArray()[ind];
+                        } else {
+                            j--;
+
+                        }
+                        ind++;
                     } else {
                         h += "A";
                     }
@@ -198,11 +207,35 @@ String type = "";
                 encode.setPlain(encode.hex_to_bin(h));
                 encode.setHex_plain(h);
                 encode.encode();
-                Res += (encode.bin_to_hex(encode.getCipher()));
+                Res = (encode.bin_to_hex(encode.getCipher()));
             }
             jTextArea2.setText(Res);
         } else if (type == "bin") {
 
+            encode.setBig_key(key);
+            double size = 0;
+            size = Math.ceil((double) x / (double) 64);
+            int ind = 0;
+            for (int i = 0; i < size; i++) {
+                String h = "";
+                for (int j = 0; j < 64; j++) {
+                    if (ind < x) {
+                        if (pl.toCharArray()[ind] != ' ') {
+                            h += pl.toCharArray()[ind++];
+                        }
+
+                    } else {
+                        h += "1";
+                    }
+
+                }
+                System.out.println("h " + h);
+                encode.setPlain((h));
+                encode.setHex_plain(encode.bin_to_hex(h));
+                encode.encode();
+                Res += ((encode.getCipher()));
+            }
+            jTextArea2.setText(Res);
         } else {
             JOptionPane.showMessageDialog(null, "must choose hex or binary");
         }
