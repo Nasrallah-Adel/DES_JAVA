@@ -2,9 +2,9 @@
 
 <html>
 <head>
-<title>The DES Algorithm Illustrated</title>
+
 </head>
-<A HREF="mailto:orlingrabbe@orlingrabbe.com"> [Email Reply] </A>
+
 <body bgcolor="white">
 <h2 align=center>The DES Algorithm Illustrated</h2>
 <h3 align=center><i>by J. Orlin Grabbe</i></h3>
