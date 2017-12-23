@@ -22,17 +22,7 @@ public class DES {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        try {
-            File file = new File("data.DES");
-            Scanner sc = new Scanner(file);
-          while (sc.hasNextLine()) {
-                System.out.println(sc.nextInt());
-            }
-
-// TODO code application logic here
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(DES.class.getName()).log(Level.SEVERE, null, ex);
-        }
+       new DES_GUI().setVisible(true);
     }
 
 }
